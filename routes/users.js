@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { File } = require('../sequelize');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
