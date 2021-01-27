@@ -1,15 +1,11 @@
 module.exports = (sequelize, type) => {
     return sequelize.define('user', {
         id: {
-            type: type.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        email: {
             type: type.STRING,
             unique: true,
             length: 255,
-            allowNull: false
+            allowNull: false,
+            primaryKey: true,
         },
         password: {
             type: type.TEXT,
