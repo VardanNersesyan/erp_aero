@@ -14,9 +14,6 @@ module.exports = (sequelize, type) => {
         token: {
             type: type.TEXT,
         },
-        test: {
-            type: type.TEXT,
-        },
         refreshToken: {
             type: type.TEXT,
             field: 'refresh_token'
