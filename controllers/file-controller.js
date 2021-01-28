@@ -4,6 +4,7 @@ const FileManager = require('../helpers/file-manager');
 exports.upload = async (req, res, next) => {
     try {
         const file = req.file;
+
         if (!file) {
             return res.status(400)
                 .json({
@@ -43,7 +44,6 @@ exports.list = async (req, res, next) => {
         const FileRep = new FileRepository();
         const response = await FileRep.getListByUserId(req.userId, page, list_size);
 
-
         res.json({
             success: true,
             ...response
@@ -81,6 +81,51 @@ exports.delete = async (req, res, next) => {
         await FileRep.deleteFileByIdAndUserId(req.params.fileId, req.userId);
         await FileManager.remove(oldData.path)
 
+        res.json({
+            success: true,
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
+exports.update = async (req, res, next) => {
+    try {
+        const file = req.file;
+
+        if (!file) {
+            return res.status(400)
+                .json({
+                    success: false,
+                    message: 'File is required field'
+                });
+        }
+
+        const fileName = file.originalname;
+        const fileExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+        const fileMimeType = file.mimetype;
+        const fileSize = file.size;
+        const filePath = await FileManager.write('files', file);
+
+        const FileRep = new FileRepository();
+        const oldData = await FileRep.getFileByIdAndUserId(req.params.fileId, req.userId, ['path']);
+        if (!oldData) {
+            return res.status(404)
+                .json({
+                    success: false,
+                    message: "file not found!"
+                });
+        }
+
+        await FileRep.updateByIdAndUserId(req.params.fileId, req.userId, {
+            name: fileName,
+            extension: fileExt,
+            mimeType: fileMimeType,
+            size: fileSize,
+            path: filePath,
+        })
+
+        await FileManager.remove(oldData.path)
         res.json({
             success: true,
         });

@@ -18,6 +18,19 @@ module.exports.FileRepository = class FileRepository extends BaseRepository {
         return response.dataValues;
     }
 
+    updateByIdAndUserId = async (fileId, userId, { name, extension, mimeType, size, path }) => {
+        const response = await this.MODEL.update({
+            name, extension, mimeType, size, path
+        }, {
+            where: {
+                userId,
+                id: fileId
+            }
+        });
+
+        return !!response;
+    }
+
     getListByUserId = async (userId, page = 1, listSize = 10) => {
         const { limit, offset } = this.getPagination(page, listSize);
 

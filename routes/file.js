@@ -23,17 +23,23 @@ router.get(
 
 router.delete(
     '/delete/:fileId',
-    param('fileId').notEmpty().isNumeric().toInt(),
+    param('fileId').isNumeric().toInt(),
     valid,
     fileController.delete
 );
-router.put('/update/:fileId');
+router.put(
+    '/update/:fileId',
+    multer().single('file'),
+    param('fileId').isNumeric().toInt(),
+    valid,
+    fileController.update
+);
 
 router.get('/download/:fileId');
 
 router.get(
     '/:fileId',
-    param('fileId').notEmpty().isNumeric().toInt(),
+    param('fileId').isNumeric().toInt(),
     valid,
     fileController.getById
 );
