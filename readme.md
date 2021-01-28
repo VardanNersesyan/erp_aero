@@ -6,6 +6,9 @@
 * docker start aero-mysql-container
 * docker stop aero-mysql-container
 
+##Postman:
+  * #### https://www.getpostman.com/collections/a37841b35806eb0c3929
+
 ##Техническое задание 
 ####Задача:
 ####Сделать сервис с REST API.
