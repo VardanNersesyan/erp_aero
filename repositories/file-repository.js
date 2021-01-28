@@ -21,6 +21,9 @@ module.exports.FileRepository = class FileRepository extends BaseRepository {
         const { limit, offset } = this.getPagination(page, listSize);
 
         const response = await this.MODEL.findAndCountAll({
+            attributes: [
+                'id', 'name', 'extension', 'mimeType', 'size', 'createdAt'
+            ],
             where: { userId },
             limit,
             offset
