@@ -139,3 +139,23 @@ exports.update = async (req, res, next) => {
         next(err);
     }
 }
+
+exports.download = async (req, res, next) => {
+    try {
+        const FileRep = new FileRepository();
+        const response = await FileRep.getFileByIdAndUserId(req.params.fileId, req.userId, ['path']);
+
+        if (!response) {
+            return res.status(404)
+                .json({
+                    success: false,
+                    message: "File not found!"
+                });
+        }
+
+        const file = `${process.cwd()}/${response.path}`;
+        res.download(file);
+    } catch (err) {
+        next(err);
+    }
+}

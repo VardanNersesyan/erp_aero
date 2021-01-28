@@ -35,7 +35,12 @@ router.put(
     fileController.update
 );
 
-router.get('/download/:fileId');
+router.get(
+    '/download/:fileId',
+    param('fileId').isNumeric().toInt(),
+    valid,
+    fileController.download
+);
 
 router.get(
     '/:fileId',
