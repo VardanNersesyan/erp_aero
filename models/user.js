@@ -6,13 +6,11 @@ module.exports = (sequelize, type) => {
             length: 255,
             allowNull: false,
             primaryKey: true,
+            uniqueKey: true,
         },
         password: {
             type: type.TEXT,
             allowNull: false
-        },
-        token: {
-            type: type.TEXT,
         },
         refreshToken: {
             type: type.TEXT,
