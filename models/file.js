@@ -19,6 +19,9 @@ module.exports = (sequelize, type) => {
             type: type.BIGINT,
             unsigned: true,
         },
+        path: {
+            type: type.TEXT
+        },
         createdAt: {
             type: type.DATE,
             field: 'created_at',
