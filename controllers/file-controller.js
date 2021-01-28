@@ -36,3 +36,19 @@ exports.upload = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.list = async (req, res, next) => {
+    try {
+        const { list_size = 10, page = 1 } = req.query;
+        const FileRep = new FileRepository();
+        const response = await FileRep.getListByUserId(req.userId, page, list_size);
+
+
+        res.json({
+            success: true,
+            ...response
+        });
+    } catch (err) {
+        next(err);
+    }
+}

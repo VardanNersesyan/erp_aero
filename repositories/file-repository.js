@@ -17,4 +17,16 @@ module.exports.FileRepository = class FileRepository extends BaseRepository {
         return response.dataValues;
     }
 
+    getListByUserId = async (userId, page = 1, listSize = 10) => {
+        const { limit, offset } = this.getPagination(page, listSize);
+
+        const response = await this.MODEL.findAndCountAll({
+            where: { userId },
+            limit,
+            offset
+        });
+
+        return this.getPagingData(response, page, listSize);
+    }
+
 }
