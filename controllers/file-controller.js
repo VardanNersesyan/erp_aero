@@ -52,3 +52,39 @@ exports.list = async (req, res, next) => {
         next(err);
     }
 }
+
+exports.getById = async (req, res, next) => {
+    try {
+        const FileRep = new FileRepository();
+        const response = await FileRep.getFileByIdAndUserId(req.params.fileId, req.userId);
+
+        res.json({
+            success: true,
+            data: response
+        });
+    } catch (err) {
+        next(err);
+    }
+}
+
+exports.delete = async (req, res, next) => {
+    try {
+        const FileRep = new FileRepository();
+        const oldData = await FileRep.getFileByIdAndUserId(req.params.fileId, req.userId, ['path']);
+        if (!oldData) {
+            return res.status(404)
+                .json({
+                    success: false,
+                    message: "file not found!"
+                });
+        }
+        await FileRep.deleteFileByIdAndUserId(req.params.fileId, req.userId);
+        await FileManager.remove(oldData.path)
+
+        res.json({
+            success: true,
+        });
+    } catch (err) {
+        next(err);
+    }
+}

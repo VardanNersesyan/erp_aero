@@ -4,6 +4,7 @@ const { BaseRepository } = require('./base-repository');
 module.exports.FileRepository = class FileRepository extends BaseRepository {
 
     MODEL = File;
+    fields = [ 'id', 'name', 'extension', 'mimeType', 'size', 'createdAt'];
 
     create = async ({ name, extension, mimeType, size, path, userId }) => {
         const response = await this.MODEL.create({
@@ -21,15 +22,44 @@ module.exports.FileRepository = class FileRepository extends BaseRepository {
         const { limit, offset } = this.getPagination(page, listSize);
 
         const response = await this.MODEL.findAndCountAll({
-            attributes: [
-                'id', 'name', 'extension', 'mimeType', 'size', 'createdAt'
-            ],
+            attributes: this.fields,
             where: { userId },
             limit,
             offset
         });
 
         return this.getPagingData(response, page, listSize);
+    }
+
+    getFileByIdAndUserId = async (fileId, userId, fields) => {
+        const response = await this.MODEL.findOne({
+            attributes: fields || this.fields,
+            where: {
+                userId,
+                id: fileId
+            },
+        });
+
+        if (!response) {
+            return null;
+        }
+
+        return response.dataValues;
+    }
+
+    deleteFileByIdAndUserId = async (fileId, userId) => {
+        const response = await this.MODEL.destroy({
+            where: {
+                userId,
+                id: fileId
+            },
+        });
+
+        if (!response) {
+            return null;
+        }
+
+        return response.dataValues;
     }
 
 }

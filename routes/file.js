@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fileController = require('../controllers/file-controller');
 const multer = require('multer');
-const { query } = require('express-validator');
+const { query, param } = require('express-validator');
 const { valid } = require('../middleware');
 
 router.post(
@@ -21,12 +21,21 @@ router.get(
     fileController.list
 );
 
+router.delete(
+    '/delete/:fileId',
+    param('fileId').notEmpty().isNumeric().toInt(),
+    valid,
+    fileController.delete
+);
+router.put('/update/:fileId');
 
-router.delete('/delete/:id');
-router.get('/download/:id');
-router.put('/update/:id');
-router.get('/:id');
+router.get('/download/:fileId');
 
-
+router.get(
+    '/:fileId',
+    param('fileId').notEmpty().isNumeric().toInt(),
+    valid,
+    fileController.getById
+);
 
 module.exports = router;
