@@ -1,6 +1,17 @@
 const { FileRepository } = require('../repositories/file-repository');
 const FileManager = require('../helpers/file-manager');
 
+const fileData = (file) => {
+    const fileName = file.originalname;
+    const fileExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+    const fileMimeType = file.mimetype;
+    const fileSize = file.size;
+
+    return {
+        fileName, fileExt, fileMimeType, fileSize
+    }
+}
+
 exports.upload = async (req, res, next) => {
     try {
         const file = req.file;
@@ -13,10 +24,7 @@ exports.upload = async (req, res, next) => {
                 });
         }
 
-        const fileName = file.originalname;
-        const fileExt = fileName.substr(fileName.lastIndexOf('.') + 1);
-        const fileMimeType = file.mimetype;
-        const fileSize = file.size;
+        const { fileName, fileExt, fileMimeType, fileSize } = fileData(file);
 
         const filePath = await FileManager.write('files', file);
 
@@ -101,10 +109,8 @@ exports.update = async (req, res, next) => {
                 });
         }
 
-        const fileName = file.originalname;
-        const fileExt = fileName.substr(fileName.lastIndexOf('.') + 1);
-        const fileMimeType = file.mimetype;
-        const fileSize = file.size;
+        const { fileName, fileExt, fileMimeType, fileSize } = fileData(file);
+
         const filePath = await FileManager.write('files', file);
 
         const FileRep = new FileRepository();
