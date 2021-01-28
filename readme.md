@@ -6,12 +6,12 @@
 * docker start aero-mysql-container
 * docker stop aero-mysql-container
 
-##Postman:
+## Postman:
   * #### https://www.getpostman.com/collections/a37841b35806eb0c3929
 
-##Техническое задание 
-####Задача:
-####Сделать сервис с REST API.
+## Техническое задание 
+#### Задача:
+#### Сделать сервис с REST API.
 * Авторизация по bearer токену (/info, /logout, /file(все роуты) );
 * Настроить CORS для доступа с любого домена;
 * DB – Mysql;
@@ -33,4 +33,4 @@
     * /logout [GET] - выйти из системы;
 * После выхода необходимо получить новый токен;
 * Старый должен перестать работать;
-##Выполнено за 8ч.
+## Выполнено за 8ч.
