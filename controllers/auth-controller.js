@@ -114,7 +114,9 @@ exports.refreshToken = async (req, res, next) => {
                 });
         }
 
-        if (decodedToken.exp * 1000 < Date.now()) {
+        const isTokenExists = await UserRep.isTokenExists(token);
+
+        if (decodedToken.exp * 1000 < Date.now() || !isTokenExists) {
             return res.status(401)
                 .json({
                     success: false,

@@ -76,4 +76,14 @@ module.exports.UserRepository = class UserRepository extends BaseRepository {
 
         return !!response[0];
     }
+
+    isTokenExists = async (token) => {
+        const count = await this.MODEL.count({
+            where: {
+                refreshToken: token
+            }
+        });
+
+        return !!count;
+    }
 }
